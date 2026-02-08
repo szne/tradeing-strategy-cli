@@ -12,3 +12,6 @@ pip install -e .
 - `strategy validate --path <strategy-pack-root>`
 - `strategy test --path <strategy-pack-root>`
 - `strategy backtest --engine-root <trading-engine-root>`
+
+## リリース
+- 手順は `RELEASE.md` を参照してください。
