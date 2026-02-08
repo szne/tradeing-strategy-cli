@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "strategy-cli"
+version = "0.1.0"
+description = "CLI utilities for strategy-pack development"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+strategy = "strategy_cli.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["strategy_cli*"]
