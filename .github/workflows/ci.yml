@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test-and-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout strategy-cli
+        uses: actions/checkout@v4
+
+      - name: Checkout trading-sdk
+        uses: actions/checkout@v4
+        with:
+          repository: szne/tradeing-sdk
+          path: external/trading-sdk
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest pandas
+          python -m pip install -e external/trading-sdk
+          python -m pip install -e .
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: CLI smoke test
+        run: |
+          set -euo pipefail
+          TMP_DIR="$(mktemp -d)"
+          python -m strategy_cli.cli new "smoke strategy" --path "${TMP_DIR}"
+          cat > "${TMP_DIR}/pyproject.toml" <<'EOF'
+          [project]
+          name = "smoke-pack"
+          version = "0.1.0"
+          dependencies = ["trading-sdk>=0.1,<0.2"]
+
+          [project.entry-points."trading_system.strategies"]
+          smoke_strategy = "strategy_pack.strategies.smoke_strategy:SmokeStrategy"
+          EOF
+          python -m strategy_cli.cli validate --path "${TMP_DIR}"
+          python -m strategy_cli.cli test --path "${TMP_DIR}"
