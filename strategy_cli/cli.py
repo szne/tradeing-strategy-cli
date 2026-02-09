@@ -316,7 +316,7 @@ def build_parser() -> argparse.ArgumentParser:
     backtest_parser.add_argument(
         "--source",
         default="synthetic",
-        choices=["auto", "local_csv", "http_csv", "synthetic"],
+        choices=["auto", "local_csv", "local_parquet", "http_csv", "synthetic"],
     )
     backtest_parser.add_argument("--rows", type=int, default=500)
     backtest_parser.add_argument("--strategy", default=None)
