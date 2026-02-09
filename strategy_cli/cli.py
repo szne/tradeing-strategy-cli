@@ -310,7 +310,7 @@ def build_parser() -> argparse.ArgumentParser:
     backtest_parser.add_argument("--engine-root", default="..", help="engine repository root")
     backtest_parser.add_argument(
         "--config",
-        default="configs/strategy_pack_entrypoint.yaml",
+        default="configs/default.yaml",
         help="engine config path",
     )
     backtest_parser.add_argument(
